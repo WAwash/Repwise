@@ -1,0 +1,746 @@
+ <!DOCTYPE html>
+<html lang="en">
+    <style>
+        html {
+            min-height: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            background-color: rgb(44, 44, 44);
+            background-image: linear-gradient(to bottom, rgb(0, 0, 0), rgb(44, 44, 44));
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-attachment: fixed;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            min-height: 100dvh;
+            background: transparent;
+        }
+
+        #Title {
+            background-color: rgba(12, 12, 12, 0);
+            color: white;
+            text-align: center;
+            font-family: sans-serif;
+            font-size: 32px;
+            font-weight: bold;
+            padding-top: 125px;
+            padding-bottom: 50px;
+            border-bottom: 2px solid white;
+            margin: 0;
+        }
+
+        #upperbody {
+            background-color: rgba(12, 12, 12, 0);
+            color: white;
+            text-align: center;
+            font-family: sans-serif;
+            font-size: 28px;
+            font-weight: bold;
+            padding-top: 50px;
+            padding-bottom: 20px;
+            
+        }
+
+        #lowerbody {
+            background-color: rgba(12, 12, 12, 0);
+            color: white;
+            text-align: center;
+            font-family: sans-serif;
+            font-size: 28px;
+            font-weight: bold;
+            padding-top: 50px;
+            padding-bottom: 20px;
+        }
+
+        .upperBody {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            column-gap: clamp(10px, 4vw, 60px);
+            row-gap: 20px;
+            padding: 20px 16px 0 16px;
+            box-sizing: border-box;
+        }
+
+        .lowerBody {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            column-gap: clamp(10px, 4vw, 60px);
+            row-gap: 20px;
+            padding: 20px 16px 0 16px;
+            box-sizing: border-box;
+            margin-bottom: 5%;
+        }
+        
+        .upperBodySelector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            max-width: 100%;
+            height: 75px;
+            margin: 0;
+            box-sizing: border-box;
+            /* Fixed/clamped radius — % radii follow width vs height separately and look uneven when cells stretch wide */
+            border-radius: clamp(10px, 1.5vw, 16px);
+            overflow: hidden;
+            font-size: 18px;
+            font-family: sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0.15);
+            touch-action: manipulation;
+        }
+
+        .upperBodyItem {
+            position: relative;
+            z-index: 0;
+        }
+
+        /* Raise the whole cell above later grid items so the open menu (and links) receive taps, not cells below. */
+        .upperBodyItem.menu-open {
+            z-index: 1000;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background-color: rgb(20, 20, 20);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: clamp(10px, 1.5vw, 16px);
+            color: white;
+            padding: 12px;
+            overflow: hidden;
+        }
+
+        .dropdown.open {
+            display: block;
+        }
+
+        .dropdownItem {
+            padding: 8px 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            text-align: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0.12);
+            touch-action: manipulation;
+        }
+
+        .dropdownItem:last-child {
+            border-bottom: none;
+        }
+
+        .subDropdown {
+            display: none;
+            margin-top: 12px;
+            background-color: rgb(25, 25, 25);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: clamp(8px, 1.2vw, 12px);
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        .subDropdown.open {
+            display: block;
+        }
+
+        .subDropdownItem {
+            padding: 8px 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            text-align: center;
+        }
+
+        .subDropdownItem:last-child {
+            border-bottom: none;
+        }
+
+        .subDropdown a {
+            color: white;
+        }
+
+        .subDropdown a:visited {
+            color: white;
+        }
+
+        .subDropdown a:hover,
+        .subDropdown a:focus-visible {
+            color: white;
+            text-decoration: underline;
+        }
+
+        #bicep {
+            background-color: rgb(12, 12, 124);
+            color: white;
+        }
+
+        #tricep {
+            background-color: rgb(12, 12, 124);
+            color: white;
+        }
+
+        #shoulder {
+            background-color: rgb(12, 12, 124);
+            color: white;
+        }
+
+        #chest {
+            background-color: rgb(12, 12, 124);
+            color: white;
+        }
+
+        #back {
+            background-color: rgb(12, 12, 124);
+            color: white;
+        }
+
+        #core {
+            background-color: rgb(12, 12, 124);
+            color: white;
+        }
+
+        #glutes {
+            background-color: rgb(12, 12, 124);
+            color: white;
+        }
+
+        #quads {
+            background-color: rgb(12, 12, 124);
+            color: white;
+        }
+
+        #hamstrings {
+            background-color: rgb(12, 12, 124);
+            color: white;
+        }
+
+        #calves {
+            background-color: rgb(12, 12, 124);
+            color: white;
+        }
+
+        #lowerblank1 {
+            background-color: rgb(12, 12, 124);
+            color: white;
+        }
+
+        #lowerblank2 {
+            background-color: rgb(12, 12, 124);
+            color: white;
+        }
+
+        .scrollablecontainer {
+            overflow-y: auto;
+        }
+
+        #head1 {
+            background-color: rgb(42, 42, 92);
+            color: white;
+            font-size: 20px;
+            font-family: sans-serif Gothic;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            z-index: 100;
+            border-bottom: 2px solid rgb(11, 0, 53);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 clamp(12px, 4vw, 24px);
+            box-sizing: border-box;
+        }
+
+        #about,
+        #contact {
+            margin: 0;
+            line-height: 1.2;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        #about {
+            margin-right: auto;
+        }
+
+        #about:hover,
+        #about:focus-visible,
+        #contact:hover,
+        #contact:focus-visible {
+            text-decoration: underline;
+        }
+
+    </style>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+        <title>Title</title>
+    </head>
+
+    <body>
+        <section id="head1">
+            <a id="about" href="./about.html">About</a>
+            <a id="contact" href="https://forms.gle/8RTjLU3jkQig69ey7">Contact/Feedback</a>
+        </section>
+
+<h1 id="Title">
+    Rep-Wise
+</h1>
+
+<h1 id="upperbody">
+
+    Upper Body
+
+</h1>
+
+<div class="upperBody">
+
+    <div class="upperBodyItem">
+        <div class="upperBodySelector" id="bicep">Biceps</div>
+        <div class="dropdown" id="bicepDropdown">
+            <div class="dropdownItem" data-sub="1">Hammer Curl</div>
+            <div class="dropdownItem" data-sub="2">EZ-Bar Preacher Curl</div>
+            <div class="dropdownItem" data-sub="3">Concentration Curl</div>
+
+            <div class="subDropdown" id="bicepSub1">
+                <div class="subDropdownItem">
+                    Hammer Curls!
+                    <a href="https://youtube.com/shorts/OPhgvwKBOwI?si=HxnrGINOKMMsbd2Q">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="bicepSub2">
+                <div class="subDropdownItem">
+                    Preacher Curls!
+                    <a href="https://youtube.com/shorts/P13VQDU1q9c?si=ya8hInEgsmMtB-s4">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="bicepSub3">
+                <div class="subDropdownItem">
+                    Concentration Curls!
+                    <a href="https://youtube.com/shorts/I_bKCYL2nL8?si=iKD8NKkYofESS7Gj">Click Here for Demo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="upperBodyItem">
+        <div class="upperBodySelector" id="tricep">Triceps</div>
+        <div class="dropdown" id="tricepDropdown">
+            <div class="dropdownItem" data-sub="1">Overhead Dumbbell Extensions</div>
+            <div class="dropdownItem" data-sub="2">Cable Overhead Extensions</div>
+            <div class="dropdownItem" data-sub="3">Tricep Kickbacks</div>
+
+            <div class="subDropdown" id="tricepSub1">
+                <div class="subDropdownItem">
+                    Overhead Extensions!
+                    <a href="https://youtube.com/shorts/T3e390Dl3XU?si=5Iuo9UIbtteis1rl">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="tricepSub2">
+                <div class="subDropdownItem">
+                    Cable Overhead Extensions!
+                    <a href="https://youtube.com/shorts/xlyQS2ZhttQ?si=ymhxuwZ-7LHr8Gvc">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="tricepSub3">
+                <div class="subDropdownItem">
+                    Tricep Kickbacks!
+                    <a href="https://youtube.com/shorts/_oBoAkoR71g?si=i6E1-KdharpKXRS9">Click Here for Demo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="upperBodyItem">
+        <div class="upperBodySelector" id="shoulder">Shoulders</div>
+        <div class="dropdown" id="shoulderDropdown">
+            <div class="dropdownItem" data-sub="1">Shoulder Press (Machine or Dumbbells)</div>
+            <div class="dropdownItem" data-sub="2">Lateral Raises</div>
+            <div class="dropdownItem" data-sub="3">Reverse Fly Machine</div>
+
+            <div class="subDropdown" id="shoulderSub1">
+                <div class="subDropdownItem">
+                    Shoulder Press!
+                    <a href="https://youtube.com/shorts/L3R_9Lk_rsQ?si=ZoURwRnYHO3y6Q9L">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="shoulderSub2">
+                <div class="subDropdownItem">
+                    Lateral Raises!
+                    <a href="https://youtube.com/shorts/FIQt9pqinXc?si=JJhFCJr5GwFdUkqh">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="shoulderSub3">
+                <div class="subDropdownItem">
+                    Reverse Fly!
+                    <a href="https://youtube.com/shorts/TJgaFyUSBaY?si=VUob8n3LWVK64KeG">Click Here for Demo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="upperBodyItem">
+        <div class="upperBodySelector" id="chest">Chest</div>
+        <div class="dropdown" id="chestDropdown">
+            <div class="dropdownItem" data-sub="1">Barbell Bench Press</div>
+            <div class="dropdownItem" data-sub="2">Incline Dumbbell Press</div>
+            <div class="dropdownItem" data-sub="3">Pec Deck</div>
+
+            <div class="subDropdown" id="chestSub1">
+                <div class="subDropdownItem">
+                    Bench Press!
+                    <a href="https://youtube.com/shorts/hWbUlkb5Ms4?si=fxS4dlUDx7LNG6yA">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="chestSub2">
+                <div class="subDropdownItem">
+                    Incline Dumbbell Press!
+                    <a href="https://youtube.com/shorts/5orOHJL2qS4?si=FXmgWlRvdkUdcPt5">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="chestSub3">
+                <div class="subDropdownItem">
+                    Pec Deck!
+                    <a href="https://youtube.com/shorts/rOrr4kSwQpE?si=AKOBGvI7VO0svIMS">Click Here for Demo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="upperBodyItem">
+        <div class="upperBodySelector" id="back">Back</div>
+        <div class="dropdown" id="backDropdown">
+            <div class="dropdownItem" data-sub="1">Deadlifts</div>
+            <div class="dropdownItem" data-sub="2">Lat Pulldown</div>
+            <div class="dropdownItem" data-sub="3">Seated Cable Rows</div>
+
+            <div class="subDropdown" id="backSub1">
+                <div class="subDropdownItem">
+                    Deadlifts!
+                    <a href="https://youtube.com/shorts/ZaTM37cfiDs?si=B19LInKSjZb5-hOc">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="backSub2">
+                <div class="subDropdownItem">
+                    Lat Pulldown!
+                    <a href="https://youtube.com/shorts/hnSqbBk15tw?si=yf8wzacw5YjYwhsx">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="backSub3">
+                <div class="subDropdownItem">
+                    Seated Cable Rows!
+                    <a href="https://youtube.com/shorts/8QuMq1GMMng?si=Ut1oLfJ4nWOxg11e">Click Here for Demo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="upperBodyItem">
+        <div class="upperBodySelector" id="core">Core</div>
+        <div class="dropdown" id="coreDropdown">
+            <div class="dropdownItem" data-sub="1">Sit-Ups</div>
+            <div class="dropdownItem" data-sub="2">Russian Twists</div>
+            <div class="dropdownItem" data-sub="3">Hollow Hold</div>
+
+            <div class="subDropdown" id="coreSub1">
+                <div class="subDropdownItem">
+                    Sit-Ups!
+                    <a href="https://youtube.com/shorts/GSjm29FESiQ?si=rhwtiPWG467jzxC7">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="coreSub2">
+                <div class="subDropdownItem">
+                    Russian Twists!
+                    <a href="https://youtube.com/shorts/aRUMRbl7KS4?si=ntmDY_TVggjZ1321">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="coreSub3">
+                <div class="subDropdownItem">
+                    Hollow Hold!
+                    <a href="https://youtube.com/shorts/Xk-JcNj6lfY?si=7_Urj6-eHkNzhCRh">Click Here for Demo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<h1 id="lowerbody">Lower Body</h1>
+
+<div class="lowerBody">
+    <div class="upperBodyItem">
+        <div class="upperBodySelector" id="glutes">Glutes</div>
+        <div class="dropdown" id="glutesDropdown">
+            <div class="dropdownItem" data-sub="1">Barbell Hip Thrust</div>
+            <div class="dropdownItem" data-sub="2">Glute Bridge</div>
+            <div class="dropdownItem" data-sub="3">Back Squats</div>
+
+            <div class="subDropdown" id="glutesSub1">
+                <div class="subDropdownItem">
+                    Barbell Hip Thrusts!
+                    <a href="https://youtube.com/shorts/Kvh5yudFKyM?si=SQ1LaLVY9r53Znoz">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="glutesSub2">
+                <div class="subDropdownItem">
+                    Glute Bridges!
+                    <a href="https://youtube.com/shorts/X_IGw8U_e38?si=sSW_0622vT0u3NIo">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="glutesSub3">
+                <div class="subDropdownItem">
+                    Back Squats!
+                    <a href="https://youtube.com/shorts/PPmvh7gBTi0?si=n8kvbTp6FxkTibZ-">Click Here for Demo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="upperBodyItem">
+        <div class="upperBodySelector" id="quads">Quads</div>
+        <div class="dropdown" id="quadsDropdown">
+            <div class="dropdownItem" data-sub="1">Leg Press</div>
+            <div class="dropdownItem" data-sub="2">Leg Extension</div>
+            <div class="dropdownItem" data-sub="3">Lunges</div>
+
+            <div class="subDropdown" id="quadsSub1">
+                <div class="subDropdownItem">
+                    Leg Press!
+                    <a href="https://youtube.com/shorts/BnacvXdaxq8?si=HxZyCIphrXEof4J5">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="quadsSub2">
+                <div class="subDropdownItem">
+                    Leg Extensions!
+                    <a href="https://youtube.com/shorts/w72YiHz15CA?si=IyDohIRp3_FNOq50">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="quadsSub3">
+                <div class="subDropdownItem">
+                    Lunges!
+                    <a href="https://youtube.com/shorts/yNSXHJKYU-s?si=knL_TYjS4Exjy6Cs">Click Here for Demo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="upperBodyItem">
+        <div class="upperBodySelector" id="hamstrings">Hamstrings</div>
+        <div class="dropdown" id="hamstringsDropdown">
+            <div class="dropdownItem" data-sub="1">Romanian Deadlift</div>
+            <div class="dropdownItem" data-sub="2">Leg Curl</div>
+            <div class="dropdownItem" data-sub="3">Nordic Hamstring Curl</div>
+
+            <div class="subDropdown" id="hamstringsSub1">
+                <div class="subDropdownItem">
+                    Romanian Deadlifts!
+                    <a href="https://youtube.com/shorts/d-hn_0sEpRQ?si=gkQMF-5BszFvAveT">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="hamstringsSub2">
+                <div class="subDropdownItem">
+                    Leg Curls!
+                    <a href="https://youtube.com/shorts/FRy58-v0YII?si=AR8L2JxdbXi1W5wD">Click Here for Demo</a>
+                </div>
+            </div>
+            <div class="subDropdown" id="hamstringsSub3">
+                <div class="subDropdownItem">
+                    Nordic Hamstring Curls!
+                    <a href="https://youtube.com/shorts/wgU_Fqjcvcc?si=A-PIf6iA6I4jhB5V">Click Here for Demo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="upperBodyItem">
+        <div class="upperBodySelector" id="calves">Calves</div>
+        <div class="dropdown" id="calvesDropdown">
+            <div class="dropdownItem" data-sub="1">Standing Calf Raise</div>
+
+            <div class="subDropdown" id="calvesSub1">
+                <div class="subDropdownItem">
+                    Standing Calf Raises!
+                    <a href="https://youtube.com/shorts/xwszHjl2D40?si=1pG6TZ_88cFFyH3s">Click Here for Demo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="upperBodyItem">
+        <div class="upperBodySelector" id="lowerblank1"></div>
+    </div>
+
+    <div class="upperBodyItem">
+        <div class="upperBodySelector" id="lowerblank2"></div>
+    </div>
+</div>
+
+<script>
+const pairs = [
+    {
+        trigger: document.getElementById("bicep"),
+        dropdown: document.getElementById("bicepDropdown"),
+        subDropdowns: {
+            "1": document.getElementById("bicepSub1"),
+            "2": document.getElementById("bicepSub2"),
+            "3": document.getElementById("bicepSub3"),
+        },
+    },
+    {
+        trigger: document.getElementById("tricep"),
+        dropdown: document.getElementById("tricepDropdown"),
+        subDropdowns: {
+            "1": document.getElementById("tricepSub1"),
+            "2": document.getElementById("tricepSub2"),
+            "3": document.getElementById("tricepSub3"),
+        },
+    },
+    {
+        trigger: document.getElementById("shoulder"),
+        dropdown: document.getElementById("shoulderDropdown"),
+        subDropdowns: {
+            "1": document.getElementById("shoulderSub1"),
+            "2": document.getElementById("shoulderSub2"),
+            "3": document.getElementById("shoulderSub3"),
+        },
+    },
+    {
+        trigger: document.getElementById("chest"),
+        dropdown: document.getElementById("chestDropdown"),
+        subDropdowns: {
+            "1": document.getElementById("chestSub1"),
+            "2": document.getElementById("chestSub2"),
+            "3": document.getElementById("chestSub3"),
+        },
+    },
+    {
+        trigger: document.getElementById("back"),
+        dropdown: document.getElementById("backDropdown"),
+        subDropdowns: {
+            "1": document.getElementById("backSub1"),
+            "2": document.getElementById("backSub2"),
+            "3": document.getElementById("backSub3"),
+        },
+    },
+    {
+        trigger: document.getElementById("core"),
+        dropdown: document.getElementById("coreDropdown"),
+        subDropdowns: {
+            "1": document.getElementById("coreSub1"),
+            "2": document.getElementById("coreSub2"),
+            "3": document.getElementById("coreSub3"),
+        },
+    },
+    {
+        trigger: document.getElementById("glutes"),
+        dropdown: document.getElementById("glutesDropdown"),
+        subDropdowns: {
+            "1": document.getElementById("glutesSub1"),
+            "2": document.getElementById("glutesSub2"),
+            "3": document.getElementById("glutesSub3"),
+        },
+    },
+    {
+        trigger: document.getElementById("quads"),
+        dropdown: document.getElementById("quadsDropdown"),
+        subDropdowns: {
+            "1": document.getElementById("quadsSub1"),
+            "2": document.getElementById("quadsSub2"),
+            "3": document.getElementById("quadsSub3"),
+        },
+    },
+    {
+        trigger: document.getElementById("hamstrings"),
+        dropdown: document.getElementById("hamstringsDropdown"),
+        subDropdowns: {
+            "1": document.getElementById("hamstringsSub1"),
+            "2": document.getElementById("hamstringsSub2"),
+            "3": document.getElementById("hamstringsSub3"),
+        },
+    },
+    {
+        trigger: document.getElementById("calves"),
+        dropdown: document.getElementById("calvesDropdown"),
+        subDropdowns: {
+            "1": document.getElementById("calvesSub1"),
+        },
+    },
+];
+
+function closeAll() {
+    document.querySelectorAll(".upperBodyItem.menu-open").forEach((el) => el.classList.remove("menu-open"));
+    pairs.forEach(p => {
+        p.dropdown.classList.remove("open");
+        Object.values(p.subDropdowns).forEach(sd => sd.classList.remove("open"));
+    });
+}
+
+function closePairSub(pair) {
+    Object.values(pair.subDropdowns).forEach(sd => sd.classList.remove("open"));
+}
+
+function openPairSub(pair, subKey) {
+    closePairSub(pair);
+    const target = pair.subDropdowns[subKey];
+    if (target) target.classList.add("open");
+}
+
+pairs.forEach(pair => {
+    pair.dropdown.addEventListener("click", function(e) {
+        e.stopPropagation();
+    });
+
+    pair.trigger.addEventListener("click", function(e) {
+        // Close other dropdowns
+        pairs.forEach(p => {
+            if (p !== pair) {
+                p.dropdown.classList.remove("open");
+                Object.values(p.subDropdowns).forEach(sd => sd.classList.remove("open"));
+                p.dropdown.closest(".upperBodyItem")?.classList.remove("menu-open");
+            }
+        });
+
+        pair.dropdown.classList.toggle("open");
+        if (!pair.dropdown.classList.contains("open")) {
+            closePairSub(pair);
+        }
+        const cell = pair.dropdown.closest(".upperBodyItem");
+        if (cell) {
+            cell.classList.toggle("menu-open", pair.dropdown.classList.contains("open"));
+        }
+        e.stopPropagation();
+    });
+
+    // Clicking a specific option opens that option's (singular) submenu dropdown.
+    pair.dropdown.querySelectorAll(".dropdownItem").forEach(option => {
+        option.addEventListener("click", function(e) {
+            e.stopPropagation();
+            const subKey = option.dataset.sub;
+
+            // Only one submenu open at a time across all boxes
+            pairs.forEach(p => {
+                if (p !== pair) closePairSub(p);
+            });
+            openPairSub(pair, subKey);
+        });
+    });
+
+    // Prevent inside clicks from bubbling to document
+    Object.values(pair.subDropdowns).forEach(sd => {
+        sd.addEventListener("click", function(e) {
+            e.stopPropagation();
+        });
+    });
+});
+
+document.addEventListener("click", closeAll);
+
+</script>
+</body>
+</html>

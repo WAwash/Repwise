@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>About</title>
+    <style>
+        html {
+            min-height: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            background-color: rgb(44, 44, 44);
+            background-image: linear-gradient(to bottom, rgb(0, 0, 0), rgb(44, 44, 44));
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-attachment: fixed;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            min-height: 100dvh;
+            background: transparent;
+        }
+
+        #Title {
+            background-color: rgba(12, 12, 12, 0);
+            color: white;
+            text-align: center;
+            font-family: sans-serif;
+            font-size: 32px;
+            font-weight: bold;
+            padding-top: 125px;
+            padding-bottom: 50px;
+            border-bottom: 2px solid white;
+            margin: 0;
+        }
+
+        #head1 {
+            background-color: rgb(42, 42, 92);
+            color: white;
+            font-size: 20px;
+            font-family: sans-serif Gothic;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            z-index: 100;
+            border-bottom: 2px solid rgb(11, 0, 53);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 clamp(12px, 4vw, 24px);
+            box-sizing: border-box;
+        }
+
+        #home,
+        #contact {
+            margin: 0;
+            line-height: 1.2;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        #home {
+            margin-right: auto;
+        }
+
+        #home:hover,
+        #home:focus-visible,
+        #contact:hover,
+        #contact:focus-visible {
+            text-decoration: underline;
+        }
+
+        .aboutCopy {
+            color: #ccc;
+            text-align: center;
+            font-family: sans-serif;
+            font-size: clamp(16px, 2.8vw, 20px);
+            line-height: 1.5;
+            padding: clamp(24px, 5vw, 48px) clamp(16px, 4vw, 32px);
+            margin: 0 auto;
+            max-width: min(52rem, 100%);
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <section id="head1">
+        <a id="home" href="./index.html">Rep-Wise</a>
+        <a id="contact" href="https://forms.gle/8RTjLU3jkQig69ey7">Contact/Feedback</a>
+    </section>
+
+    <h1 id="Title">About</h1>
+
+    <p class="aboutCopy">
+        Rep-Wise is designed to be a great way for people to find what exercises they can do, as well as give the best results. There are many possibilities, and Rep-Wise is designed to help guide people in the right direction, by making starting off at a gym a more enjoyable process!
+    </p>
+</body>
+
+</html>
